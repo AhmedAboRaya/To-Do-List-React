@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import Modal from "./ui/modal";
 import { NotebookText } from "lucide-react";
 import Item from "./ui/Item";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { ITodoItem } from "./Intefaces";
-import toast, { Toaster } from 'react-hot-toast';
-
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   const [isChecked, setIsChecked] = useState(false);
@@ -13,12 +12,10 @@ function App() {
   const [items, setItems] = useState<ITodoItem[]>([]);
 
   const [inputValue, setInputVlaue] = useState("");
-  
-  const handleOnChangeValue = (event:React.ChangeEvent<HTMLInputElement>) => {
+
+  const handleOnChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputVlaue(event.target.value);
-  }
-  
-  
+  };
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -27,37 +24,52 @@ function App() {
   const handleClickAddItem = () => {
     event?.preventDefault();
 
-    if (inputValue.trim() !== "")
-    {
-      const newItem:ITodoItem = {
-        id: uuidv4(),
-        text: inputValue,
-        completed: false
+    if (inputValue.trim() !== "") {
+      if (items.some((item) => item.text === inputValue)) {
+        console.log("repeated");
+        toast.error("Item already exists", { duration: 1500 });
+      } else {
+        const newItem: ITodoItem = {
+          id: uuidv4(),
+          text: inputValue,
+          completed: false,
+        };
+        setItems((prev) => [newItem, ...prev]);
+
+        toast.success("Item added successfully", { duration: 1500 });
       }
-      setItems(prev => [ newItem, ...prev ]);
-
-
-      toast.success("Item added successfully", { duration: 1500 });
-    }else{
-      toast.error("Empty Item",{duration:1500});
+    } else {
+      toast.error("Empty Item", { duration: 1500 });
     }
-  }
+  };
   // useEffect(() => {
   //   console.log(items);
   // }, [items]);
 
-  
-
+  const renderItems = items.map((item) => (
+    <li key={item.id}>
+      <Item
+        handleCheckboxChange={handleCheckboxChange}
+        isChecked={isChecked}
+        value={item}
+      />
+    </li>
+  ));
 
   return (
     <div className="bg-gradient-to-r from-customBlue1 via-customBlue2 to-customCyan h-[58.2rem]">
-      <div><Toaster/></div>
-      
+      <div>
+        <Toaster />
+      </div>
+
       <Modal>
         <h1 className="text-blue-500 font-bold flex mb-4 text-2xl items-center">
           To Do List <NotebookText className="ml-2 size-7 text-yellow-400" />
         </h1>
-        <form className="space-x-[-50px] flex mb-8" onSubmit={handleClickAddItem}>
+        <form
+          className="space-x-[-50px] flex mb-8"
+          onSubmit={handleClickAddItem}
+        >
           <input
             type="text"
             onChange={handleOnChangeValue}
@@ -68,17 +80,7 @@ function App() {
           </button>
         </form>
 
-        <ul>
-          {items.map(item => (
-            <li key={item.id}>
-              <Item
-                handleCheckboxChange={handleCheckboxChange}
-                isChecked={isChecked}
-                value={item}
-              />
-            </li>
-          ))}
-        </ul>
+        <ul>{renderItems}</ul>
 
         {/* <Item handleCheckboxChange={handleCheckboxChange} isChecked={isChecked} value={items} /> */}
       </Modal>
