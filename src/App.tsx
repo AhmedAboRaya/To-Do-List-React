@@ -9,6 +9,8 @@ import toast, { Toaster } from "react-hot-toast";
 function App() {
   const [isChecked, setIsChecked] = useState(false);
 
+  const [selectedItem, setSelectedItem] = useState<string>("");
+
   const [items, setItems] = useState<ITodoItem[]>([]);
 
   const [inputValue, setInputVlaue] = useState("");
@@ -27,7 +29,7 @@ function App() {
     if (inputValue.trim() !== "") {
       if (items.some((item) => item.text === inputValue)) {
         console.log("repeated");
-        toast.error("Item already exists", { duration: 1500 });
+        toast.error("Item already exists", { duration: 2000 });
       } else {
         const newItem: ITodoItem = {
           id: uuidv4(),
@@ -36,15 +38,17 @@ function App() {
         };
         setItems((prev) => [newItem, ...prev]);
 
-        toast.success("Item added successfully", { duration: 1500 });
+        toast.success("Item added successfully", { duration: 2000 });
       }
     } else {
-      toast.error("Empty Item", { duration: 1500 });
+      toast.error("Empty Item", { duration: 2000 });
     }
   };
-  // useEffect(() => {
-  //   console.log(items);
-  // }, [items]);
+
+  const handleDeleteItem = () => {
+    const updatedItems = items.filter(item => item.id !== selectedItem);
+    setItems(updatedItems);
+  }
 
   const renderItems = items.map((item) => (
     <li key={item.id}>
@@ -52,6 +56,9 @@ function App() {
         handleCheckboxChange={handleCheckboxChange}
         isChecked={isChecked}
         value={item}
+        setSelectedItem={setSelectedItem}
+        deleteItem={handleDeleteItem}
+        selectedItem={selectedItem}
       />
     </li>
   ));
@@ -82,8 +89,9 @@ function App() {
 
         <ul>{renderItems}</ul>
 
-        {/* <Item handleCheckboxChange={handleCheckboxChange} isChecked={isChecked} value={items} /> */}
       </Modal>
+
+      
     </div>
   );
 }

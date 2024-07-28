@@ -14,5 +14,8 @@ export interface IItemProps {
     handleCheckboxChange: () => void;
     isChecked: boolean;
     value: ITodoItem;
+    setSelectedItem: (input: string) => void;
+    selectedItem: string;
+    deleteItem: () => void;
 }
 
