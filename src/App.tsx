@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useRef , useState } from "react";
 import Modal from "./ui/modal";
 import { NotebookText } from "lucide-react";
 import Item from "./ui/Item";
@@ -7,7 +7,6 @@ import { ITodoItem } from "./Intefaces";
 import toast, { Toaster } from "react-hot-toast";
 
 function App() {
-  const [isChecked, setIsChecked] = useState(false);
 
   const [selectedItem, setSelectedItem] = useState<string>("");
 
@@ -15,17 +14,14 @@ function App() {
 
   const [inputValue, setInputVlaue] = useState("");
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const handleOnChangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputVlaue(event.target.value);
   };
 
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
-  };
-
-  const handleClickAddItem = () => {
-    event?.preventDefault();
-
+  const handleClickAddItem = (event: React.FormEvent) => {
+    event.preventDefault();
     if (inputValue.trim() !== "") {
       if (items.some((item) => item.text === inputValue)) {
         console.log("repeated");
@@ -37,8 +33,11 @@ function App() {
           completed: false,
         };
         setItems((prev) => [newItem, ...prev]);
-
         toast.success("Item added successfully", { duration: 2000 });
+        setInputVlaue('');
+        if (inputRef.current) {
+          inputRef.current.value = '';
+        }
       }
     } else {
       toast.error("Empty Item", { duration: 2000 });
@@ -47,14 +46,12 @@ function App() {
 
   const handleDeleteItem = () => {
     const updatedItems = items.filter(item => item.id !== selectedItem);
-    setItems(updatedItems);
+    setItems(updatedItems); 
   }
 
   const renderItems = items.map((item) => (
     <li key={item.id}>
       <Item
-        handleCheckboxChange={handleCheckboxChange}
-        isChecked={isChecked}
         value={item}
         setSelectedItem={setSelectedItem}
         deleteItem={handleDeleteItem}
@@ -68,7 +65,6 @@ function App() {
       <div>
         <Toaster />
       </div>
-
       <Modal>
         <h1 className="text-blue-500 font-bold flex mb-4 text-2xl items-center">
           To Do List <NotebookText className="ml-2 size-7 text-yellow-400" />
@@ -78,6 +74,7 @@ function App() {
           onSubmit={handleClickAddItem}
         >
           <input
+            ref={inputRef}
             type="text"
             onChange={handleOnChangeValue}
             className="rounded-3xl border-2 border-gray-300 py-1 pr-16 focus:outline-none px-3 w-full"
@@ -86,12 +83,8 @@ function App() {
             Add
           </button>
         </form>
-
         <ul>{renderItems}</ul>
-
-      </Modal>
-
-      
+      </Modal> 
     </div>
   );
 }
