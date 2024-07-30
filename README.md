@@ -15,6 +15,7 @@ This To-Do List project is a simple and intuitive web application designed to he
 
 - **React**: The application is built using React, a popular JavaScript library for building user interfaces. React's component-based architecture allows for efficient and reusable code.
 - **Tailwind CSS**: For styling, Tailwind CSS is used. Tailwind CSS is a utility-first CSS framework that provides low-level utility classes to build custom designs without writing CSS.
+- **TypeScript**: The application is developed using TypeScript, a statically typed superset of JavaScript that enhances code quality and maintainability.
 
 ## How to Use
 
