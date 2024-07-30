@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { IItemProps } from "../Intefaces";
 import { X,Trash2  } from "lucide-react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const Item = ({ value, setSelectedItem, deleteItem, selectedItem}: IItemProps) => {  
     const handleClick = () => {
@@ -28,8 +28,7 @@ const Item = ({ value, setSelectedItem, deleteItem, selectedItem}: IItemProps) =
             />
             <label
               htmlFor="checkbox"
-              className={`text-gray-800 font-semibold text-xl`}
-              
+              className={`text-gray-800 font-semibold text-xl pr-36`}
             >
               {value.text}
             </label>
