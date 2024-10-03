@@ -18,7 +18,6 @@ This To-Do List project is a simple and intuitive web application designed to he
 - **TypeScript**: The application is developed using TypeScript, a statically typed superset of JavaScript that enhances code quality and maintainability.
 
 ## How to Use
-
 1. **Adding a Task**: Enter a task name in the input field and click the "Add" button. The task will be added to the list if the input field is not empty and the task name is unique.
 2. **Deleting a Task**: Click the "Delete" button next to the task you want to remove. The task will be deleted from the list.
 3. **Marking a Task**: Click the checkbox next to the task you want to mark as completed. The task will be visually marked, indicating it has been completed.
